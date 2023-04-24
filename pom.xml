@@ -1,0 +1,291 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.4.RELEASE</version>     
+  </parent>
+  
+<!-- Parent: groupId   <groupId>com.drobesh.hello.jenkins</groupId> based on name test1908JenkinsGithubDockerK8drobesh -->
+  <artifactId>huckFinn23-java-mS</artifactId>
+  <version>0.0.2-SNAPSHOT</version>
+  <name>huckFinn23-java-mS</name>
+  <description>2304 Test of local Mac Docker/K8+Jenkins and remote GitHub (old 2019 Spring.io v2.1.4 now v3.x</description>
+<packaging>jar</packaging>
+
+  <properties>
+		<spring.boot.version>2.0.5.RELEASE</spring.boot.version>
+		<spring.boot.maven.plugin>2.0.3.RELEASE</spring.boot.maven.plugin>
+		<spring.kafka.version>2.1.7.RELEASE</spring.kafka.version>
+		<spring.retry.version>1.2.1.RELEASE</spring.retry.version>
+		<spring.ws.version>3.0.3.RELEASE</spring.ws.version><!-- 3.0.6 -->
+
+		<swagger.version>1.5.20</swagger.version>
+		<swagger.directory>${basedir}/target/classes/META-INF/resources/swagger</swagger.directory>
+		<swagger.maven.plugin.version>3.1.7</swagger.maven.plugin.version>
+		<maven.jar.plugin.version>3.1.1</maven.jar.plugin.version>
+		<maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version><!-- QG1 -->
+		<maven.failsafe.plugin.version>2.18.1</maven.failsafe.plugin.version><!-- QG2 -->
+		<jacoco.maven.plugin.version>0.8.2</jacoco.maven.plugin.version><!-- QG3 pre scan -->
+		<sonar.jacoco.reportPath>${basedir}/target/jacoco-ut.exec</sonar.jacoco.reportPath><!-- QG3 pre scan -->
+		<sonar.jacoco.itReportPath>${basedir}/target/jacoco-it.exec</sonar.jacoco.itReportPath><!-- QG3 pre scan -->
+		<jacoco.path>${basedir}/target/jacoco_report</jacoco.path><!-- QG3 pre scan -->
+		<jacoco.itPath>${basedir}/target/jacoco_itReport</jacoco.itPath><!-- QG3 pre scan -->
+		<docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
+		
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>  
+  </properties>
+
+
+	<dependencies>
+		<!--  springboot -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.0.5.RELEASE</version>
+		</dependency>            
+		<dependency><!-- SDK library parent -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jersey</artifactId>
+		</dependency>
+		<dependency><!-- SDK library parent -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency><!-- idp-health library -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-actuator-autoconfigure</artifactId>
+		</dependency>
+<!--      
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+      </dependency>      
+For now. Remove this dependency to 'org.springframework.boot' .... iff the parent is SDK/idp-ext-bom. Until then, you need this "somewhere".      
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.0.5.RELEASE</version>
+      </dependency>      
+-->
+		<!-- refactor: idp-ext-bom.xml via sdk-java-parent/pom.xml (Resource Swagger Input REST Jersey )-->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-core</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+						
+
+		<!-- Test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+<!--       <version>3.8.1</version>  -->
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency><!-- SDK parent library -->
+    	<groupId>org.springframework.boot</groupId>
+    	<artifactId>spring-boot-starter-test</artifactId>
+    	<scope>test</scope>
+    </dependency>
+    <dependency><!-- SDK parent library -->
+    	<groupId>io.rest-assured</groupId>
+    	<artifactId>rest-assured</artifactId>
+    	<scope>test</scope>
+    </dependency>
+    <dependency><!-- Version: idp-ext-bom, Dependency from SDK Parent Lib -->
+    	<groupId>au.com.dius</groupId>
+    	<artifactId>pact-jvm-consumer-junit_2.11</artifactId>
+    	<scope>test</scope>
+<version>3.5.24</version>    	
+    </dependency>
+    <dependency>
+    	<groupId>au.com.dius</groupId>
+    	<artifactId>pact-jvm-provider-junit_2.11</artifactId>
+    	<scope>test</scope>
+<version>3.5.24</version>    	
+    </dependency>
+    
+  </dependencies>
+
+
+  <build>
+    <finalName>TheFinalDrobesh2304Ms</finalName>
+    <!-- pluginManagement maven docker plugin -->
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring.boot.maven.plugin}</version>
+        <executions>
+          <execution>
+<!-- fat, later            <configuration><classifier>fat</classifier></configuration>   -->
+            <goals><goal>repackage</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- Build an executable JAR 
+        2017 https://github.com/jenkins-docs/simple-java-maven-app/blob/master/pom.xml -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version> <!-- 3.0.2 works Eclipse comes with 3.11.1 (2019); confirm InteliJ (2022). Build maven via Jenkins -->
+        <configuration>
+        <!--           <compilerId>groovy-eclipse-compiler</compilerId> 3.0.8 -->
+			<!--           ??? take this away ???         
+          <archive><manifest><addClasspath>true</addClasspath><classpathPrefix>lib/</classpathPrefix><mainClass>com.drobesh.hello.HelloJenkinsWorld</mainClass></manifest></archive>-->
+        </configuration>
+        <!-- <executions><phase>compile</phase></executions> 3.0.8 groovy -->
+      </plugin>
+
+			<plugin><!-- 1910/2304: GC1 Unit Test, archive test results link, left nav of Jenkins -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+				<configuration>
+					<argLine>${surefireArgLine}</argLine>
+					<skipTests>${skip.unit.tests}</skipTests>	
+					<excludes>
+						<exclude>**/contract/*.java</exclude>
+						<exclude>**/integration/*.java</exclude>
+					</excludes>
+				</configuration>				
+			</plugin>
+			
+			<plugin><!-- 1910/2304: GC2 Integration Test, archive test results link, left nav of Jenkins -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven.failsafe.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>integration-tests</id>
+						<goals><goal>integration-test</goal><goal>verify</goal></goals>
+						<configuration><argLine>${failsafeArgLine}</argLine><skipITs>${skipITs}</skipITs></configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin><!-- 1911/2304: QG3 Sonar, pre-scan Jacoco -->
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.maven.plugin.version}</version>
+				<configuration>
+					<excludes>**/com/drobesh/platform/a1908ms/*.*</excludes>
+					<excludes>**/com/drobesh/platform/a1908ms/config/*.*</excludes>
+					<excludes>**/com/drobesh/platform/a1908ms/exception/*.*</excludes>
+					<!-- 
+					<excludes>**/com/drobesh/platform/a2208ms/message/*.*</excludes>
+					<excludes>**/com/drobesh/platform/a2208ms/i18n/*.*</excludes>
+					 -->
+					<excludes>**/com/drobesh/platform/a1908ms/model/*.*</excludes>
+					<excludes>**/com/drobesh/platform/a1908ms/model/swagger/*.*</excludes>
+				</configuration>
+				<executions>
+					<!-- QG3 Prepares pointer to JaCoCo runtime agent, passed as VM arg when Maven surefire plugin is executed -->
+					<execution>
+						<id>pre-unit-test</id>					
+						<goals><goal>prepare-agent</goal></goals>
+						<configuration>
+							<!-- Set path to file destination containing executed data -->
+							<destFile>${sonar.jacoco.reportPath}</destFile>
+							<propertyName>sureFireArgLine</propertyName>
+						</configuration>
+					</execution>
+					<!-- QG3 Ensures code coverage report for unit te4sts is created after unit-tests have been run -->
+					<execution>
+						<id>post-unit-test</id>					
+						<phase>test</phase>
+						<goals><goal>report</goal></goals>
+						<configuration>
+							<!-- Set path to file destination containing executed data -->
+							<destFile>${sonar.jacoco.reportPath}</destFile>
+							<outputDirectory>${jacoco.path}</outputDirectory>
+						</configuration>
+					</execution>
+					<!-- two more itReports -->
+				</executions>
+			</plugin>
+			
+			<!-- QG4 plugin Pact RESTAssured tests 
+			<plugin>
+				<groupId>au.com.dius</groupId>
+				<artifactId>pact-jvm-provider-maven_2.11</artifactId>
+				<version></version>
+				<configuration>...........</configuration>
+			</plugin>-->
+
+			<plugin><!-- 1910/2304: See etc/Readme, per howtodoinjava.com: Dockerfile image upload! -->
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.3.4</version>
+				<configuration>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+				</configuration>
+			</plugin>			
+			<plugin><!-- 1910: See etc/Readme, per howtodoinjava.com: Dockerfile image upload! -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>			
+		</plugins>
+
+		<resources><!-- Package up into the .jar -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes><include>**/*</include></includes>
+			</resource>
+			<resource>
+				<directory>/opt/ajsc/etc/config</directory>
+				<targetPath>../opt/ajsc/etc/config</targetPath>
+				<includes>
+					<include>**.*.properties</include>
+					<include>**.*.xml</include>
+					<include>**.*.yaml</include>
+					<include>**.*.cfg</include>
+					<include>**.*cadi_keyfile*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.jks</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
+
+</project>

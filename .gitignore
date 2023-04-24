@@ -1,6 +1,18 @@
 # Compiled class file
 *.class
 
+#NOTE: external CI/CD (Jenkins) IDE files (Eclipse, InteliJ) are here:
+# .idea
+# bin/.settings/
+# bin/JenkinsFile
+# zJenkinsFiles
+
+# local test/dev files Huck Finn 2023
+bin/
+etc/
+target/
+zJenkinsFiles/
+
 # Log file
 *.log
 

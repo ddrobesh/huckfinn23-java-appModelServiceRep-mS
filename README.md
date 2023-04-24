@@ -1,2 +1,4 @@
-# huckfinn23-java-appModelServiceRep-mS
-Huck Finn (FinTech) - sample Java mS
+# test2208Jenkins
+Testing GitHub public repo file update, using a private local Java mS template (c) 2019-2023 called JenkinsFile. (c) 2019-2023 All Rights Reserved, David D Drobesh. Reuse or re-distribution for commerical use is expressively prohibited by the Author.
+
+Project named "Huck Finn" for learning FinTech API and teaching my family how to code, during COVID quarantine lockdown. It evolved from there. There is a guaranteee that many parts will be found broken, incomplete and inoperable. The local privarte version has been corrected, and the original intent was not to make this repo public but it is demonstrative for non-commercial, learning purposes only.

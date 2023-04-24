@@ -1,0 +1,41 @@
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+
+	<property value="%d{yyy-MM-dd HH:mm:ss.SSS zzz} [thread:%thread] %-5level logger:%logger{20} [trace-id:%X{idp-trace-id} session-id:%X{idpctx-session-id}] - %msg%n" 
+				name="defaultPattern" />
+	
+	<property value="%d{yyy-MM-dd HH:mm:ss.SSS zzz} [thread:%thread] %-5level logger:%logger{20} [trace-id:%X{idp-trace-id} session-id:%X{idpctx-session-id} duration:%X{duration}] - %msg%n" 
+				name="apiLogPattern" />
+
+	<!--  ************************* ************************* ************************* -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"><!-- Spring logback 1.2.3.jar -->
+		<encoder>
+			<pattern>${defaultPattern}</pattern>
+		</encoder>			
+	</appender>
+	
+	<appender name="APIAPPENDER" class="ch.qos.logback.core.ConsoleAppender"><!-- Spring logback 1.2.3.jar -->
+		<!-- NO IDEA where that Java class comes from??? 2019-2022 security log output masking (PCI log pattern hider)
+		<layout class="com.drobesh.api.framework.common.logback.layout.SecurityPatternLayout">
+			<enableSecurity>true</enableSecurity>
+			<Pattern>${apiLogPattern}</Pattern>
+		</layout>
+		  -->
+	</appender>
+
+ 	<!--  ************************* ************************* ************************* -->
+	<!--***DEBUG***-->
+ 	<logger name="com.drobesh.platform.logging" level="DEBUG" additivity="false">
+ 		<appender-ref ref="APIAPPENDER" />
+ 	</logger>
+
+	<!--***INFO***-->
+ 	<logger name="com.drobesh.platform" level="INFO" additivity="false">
+ 		<appender-ref ref="STDOUT" />
+ 	</logger>
+ 	
+	<!--***INFO*** default-->
+ 	<root level="INFO">
+ 		<appender-ref ref="STDOUT" />
+ 	</root>
+ 	 
+</configuration>
